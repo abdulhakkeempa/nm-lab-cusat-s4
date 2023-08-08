@@ -1,26 +1,3 @@
-#Simpson
-def simpson_3_by_8(f,a,b,step):
-    h = (b - a) / step
-    # Array to store x_i and y_i values
-    x = [i*h + a for i in range(0,step)]
-    y = [f(j) for j in x]
-
-    #print(x)
-    #print(y)
-    # Applying simpsons formuls
-    I = y[0] + y[-1]
-
-    # iterating through 1 to n-1
-    for i,f_i in enumerate(y[1:-1]):
-        if i%3 == 0:
-            I += f_i * 2
-        else:
-            I += f_i * 3
-
-    I = I*((3/8)*h)
-
-    return I
-
 def simpson_1_by_3(f,a,b,step):
     h = (b - a) / step
     # Array to store x_i and y_i values
@@ -55,9 +32,6 @@ def main():
     for step in range(100,102):
 
         print("Step size", step)
-        I1 = simpson_3_by_8(f,a,b,step)
-        print("Simpson 3/8", I1)
-
         I2 = simpson_1_by_3(f,a,b,step)
         print("Simpson 1/3", I2)
 
