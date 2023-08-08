@@ -1,38 +1,42 @@
-def false_position(func, a, b, tol=1e-6, max_iter=100):
-    if func(a) * func(b) >= 0:
-        print("Function values at 'a' and 'b' should have opposite signs.")
-        return None
-    
-    iteration = 0
-    while (b - a) / 2 > tol and iteration < max_iter:
-        c = (a * func(b) - b * func(a)) / (func(b) - func(a))
-        
-        if func(c) == 0:
-            break
-        
-        if func(c) * func(a) < 0:
-            b = c
+#False Position
+def find_interval(f,start = 0,max_steps = 10):
+    a = start
+    b = start+1
+    y_a = f(a)
+    y_b = f(b)
+    steps = 0
+    while y_a > 0 and y_b < 0 and steps <= max_steps:
+        a = a+1
+        b = b+1
+        y_a = f(a)
+        y_b = f(b)
+        steps+=1
+    return a,b
+
+def false_postion(f,max_iters = 10):
+    a,b = (1,0)
+    # Formula to calculate the false postion
+    x_iter = lambda a,b,f: (a*f(b) - b*f(a)) / ( f(b) - f(a) )
+    iters = 0
+    while iters < max_iters:
+        x_i = x_iter(a,b,f)
+        y_i = f(x_i)
+        if y_i < 0  :
+            a = x_i
+        elif y_i > 0 :
+            b = x_i
         else:
-            a = c
-        
-        iteration += 1
-    
-    return c
+            return x_i
+        print("iteration {0} \n interval [{1} , {2}] \n f(x_{0}) = {3} \n x_{0} = {4}".format(iters,a,b,y_i,x_i))
+        iters+=1
+    print("Final root : ",x_i)
 
-# Get user input for the function as a string
-func_str = input("Enter the function in terms of 'x': ")
 
-# Create a function object from the user-provided function string
-def user_function(x):
-    return eval(func_str)
 
-# Get user input for the interval [a, b]
-a = float(input("Enter the value of 'a': "))
-b = float(input("Enter the value of 'b': "))
 
-root = false_position(user_function, a, b)
+def main():
+    function = lambda x : x**3 - 12
+    false_postion(function)
 
-if root is not None:
-    print(f"Root found at x = {root:.6f}")
-else:
-    print("False Position method did not converge within the specified tolerance or maximum iterations.")
+
+main()
